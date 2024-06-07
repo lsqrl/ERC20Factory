@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-contract Token {
-    uint256 public number;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+contract Token is ERC20 {
+
+    uint8 private _decimals;
+
+    constructor(string memory name, string memory symbol, uint8 inputDecimals, uint256 initialSupply) ERC20(name, symbol) {
+        _decimals = inputDecimals;
+        _mint(msg.sender, initialSupply * (10 ** uint256(inputDecimals)));
     }
 
-    function increment() public {
-        number++;
+    function decimals() public view override returns (uint8) {
+        return _decimals;
     }
 }
